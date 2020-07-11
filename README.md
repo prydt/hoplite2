@@ -32,17 +32,17 @@ def vgg16_preprocess(path):
     img = image.load_img(path, target_size=(224, 224))
     return preprocess_input(np.expand_dims(image.img_to_array(img), axis=0))
 
-    hop = Hoplite(model, vgg16_preprocess, layers=[
-        "block1_conv2"
-        "block2_conv2"
-        "block3_conv3"
-        "block4_conv3"
-        "block5_conv3"
-    ])
+hop = Hoplite(model, vgg16_preprocess, layers=[
+    "block1_conv2"
+    "block2_conv2"
+    "block3_conv3"
+    "block4_conv3"
+    "block5_conv3"
+])
 
-    hop.analyze_file("test.png") # analyzes test.png
+hop.analyze_file("test.png") # analyzes test.png
 
-    hop.output("output.csv") # saves output to file
+hop.output("output.csv") # saves output to file
 ```
 
 
