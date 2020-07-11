@@ -1,6 +1,6 @@
 # hoplite2
 [![PyPI version](https://badge.fury.io/py/hoplite2.svg)](https://badge.fury.io/py/hoplite2)
-a sparsity analysis tool for neural networks
+> a sparsity analysis tool for neural networks
 
 ## Installation
 `pip install hoplite2`
@@ -48,6 +48,7 @@ def vgg16_preprocess(path):
 
 Spartan implements several useful functions to analyze sparsity of arrays.
 These functions include:
+```
  - compute_average_sparsity(output,equals_zero=lambda x: x == 0)
  - consec_1d(arr, hist, equals_zero=lambda x: x == 0)
  - consec_row(output, equals_zero=lambda x: x == 0)
@@ -57,4 +58,6 @@ These functions include:
  - vec_3d_row(output, vec_size, equals_zero=lambda x: x == 0):
  - vec_3d_col(output, vec_size, equals_zero=lambda x: x == 0):
  - vec_3d_chan(output, vec_size, equals_zero=lambda x: x == 0):
+```
 
+equals_zero is a function that takes in a number and returns True if the number is considered zero. This is useful if you wish to look for values that are also close to zero and allows for additional customizablity.
