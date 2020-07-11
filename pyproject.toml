@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "hoplite2"
+author = "Pranoy Dutta"
+author-email = "pranoydll@gmail.com"
+home-page = "https://github.com/prydt/hoplite2"
+classifiers = ["License :: OSI Approved :: MIT License"]
+
