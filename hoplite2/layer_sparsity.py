@@ -1,7 +1,8 @@
-import sys
 import csv
-import numpy as np
+import sys
 from collections import OrderedDict
+
+import numpy as np
 from tensorflow.keras.models import Model
 
 from . import Spartan

@@ -18,6 +18,9 @@ class Spartan:
     @staticmethod
     def compute_average_sparsity(output, equals_zero=lambda x: x == 0):
         """Computes average sparsity of whole output"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         count = 0
         for chan in output:
             for col in chan:
@@ -29,6 +32,9 @@ class Spartan:
     @staticmethod
     def consec_1d(arr, hist, equals_zero=lambda x: x == 0):
         """calculates consecutive vectors of zeroes"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         all_nonzeroes = True
         count = 0
         for a in range(len(arr)):
@@ -47,6 +53,9 @@ class Spartan:
     @staticmethod
     def consec_chan(output, equals_zero=lambda x: x == 0):
         """Calculate consecutive zeros histogram in a channel"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         chan_hist = [0] * (len(output[0][0]) + 1)
         np.apply_along_axis(Spartan.consec_1d, CHAN, output, chan_hist, equals_zero)
         return chan_hist
@@ -54,6 +63,9 @@ class Spartan:
     @staticmethod
     def consec_row(output, equals_zero=lambda x: x == 0):
         """Calculate consecutive zeros histogram in a row"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         row_hist = [0] * (len(output[0]) + 1)
         np.apply_along_axis(Spartan.consec_1d, ROW, output, row_hist, equals_zero)
         return row_hist
@@ -61,6 +73,9 @@ class Spartan:
     @staticmethod
     def consec_col(output, equals_zero=lambda x: x == 0):
         """Calculate consecutive zeros histogram in a column"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         col_hist = [0] * (len(output) + 1)
         np.apply_along_axis(Spartan.consec_1d, COL, output, col_hist, equals_zero)
         return col_hist
@@ -70,6 +85,9 @@ class Spartan:
         """Calculates sparsity given a vector size"""
         if len(arr) < vec_size:
             return
+
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
 
         chunks = Spartan.chunk_array(arr, vec_size)
         for chunk in chunks:
@@ -82,6 +100,9 @@ class Spartan:
     @staticmethod
     def vec_3d_chan(output, vec_size, equals_zero=lambda x: x == 0):
         """Calculates sparsity of a channel given a vector size"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         vec_chan_hist = [0] * (vec_size + 1)
         np.apply_along_axis(Spartan.vec_1d, CHAN, output, vec_size, vec_chan_hist)
         return vec_chan_hist
@@ -89,6 +110,9 @@ class Spartan:
     @staticmethod
     def vec_3d_row(output, vec_size, equals_zero=lambda x: x == 0):
         """Calculates sparsity of a row given a vector size"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         vec_row_hist = [0] * (vec_size + 1)
         np.apply_along_axis(Spartan.vec_1d, ROW, output, vec_size, vec_row_hist)
         return vec_row_hist
@@ -96,6 +120,9 @@ class Spartan:
     @staticmethod
     def vec_3d_col(output, vec_size, equals_zero=lambda x: x == 0):
         """Calculates sparsity of a column given a vector size"""
+        if equals_zero is None:
+            equals_zero = lambda x: x == 0
+
         vec_col_hist = [0] * (vec_size + 1)
         np.apply_along_axis(Spartan.vec_1d, COL, output, vec_size, vec_col_hist)
         return vec_col_hist
