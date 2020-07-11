@@ -2,6 +2,7 @@ import sys
 import csv
 import numpy as np
 from collections import OrderedDict
+from tensorflow.keras.models import Model
 
 
 class LayerSparsity:
@@ -32,10 +33,19 @@ class LayerSparsity:
         out = LayerSparsity(self.name, self.dimensions, self.vector_sizes)
 
         for key in out.histograms:
-
             out.histograms[key] = np.mean(
                 np.array([self.histograms[key], other.histograms[key]]), axis=0
             ).tolist()
+
+        return out
+
+    def set_sparsities(self, model, input):
+        layer_model = Model(
+            inputs=model.inputs, outputs=model.get_layer(self.name).output
+        )
+
+        output = layer_model.predict(input)[0]
+        # TODO finish setting sparsities
 
     def output(self, filename=None):
         """Output contents of LayerSparsity object to a given filename, default: stdout"""
