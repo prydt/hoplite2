@@ -1,5 +1,7 @@
 import sys
+import csv
 import numpy as np
+from collections import OrderedDict
 
 
 class LayerSparsity:
@@ -8,7 +10,9 @@ class LayerSparsity:
         self.dimensions = dimensions
         self.avg_sparsity = 0
         self.vector_sizes = vector_sizes
-        self.histograms = dict.fromkeys(
+
+        # histograms is an OrderedDict for ease of output
+        self.histograms = OrderedDict.fromkeys(
             ["row_hist", "col_hist", "chan_hist",]
             + [
                 text.format(vec)
@@ -33,7 +37,19 @@ class LayerSparsity:
                 np.array([self.histograms[key], other.histograms[key]]), axis=0
             ).tolist()
 
-    def output(self, file=sys.stdout):
-        """Output contents of LayerSparsity object to a given file, default: stdout"""
-        # TODO
-        pass
+    def output(self, filename=None):
+        """Output contents of LayerSparsity object to a given filename, default: stdout"""
+        if filename is None:
+            file = sys.stdout
+        else:
+            file = open(filename, "a+")
+        writer = csv.writer(file, delimiter=",")
+
+        writer.writerow(["layer=", self.name])
+        writer.writerow(["dimensions=", self.dimensions])
+        writer.writerow(["average=", self.avg_sparsity])
+
+        for key in self.histograms:
+            writer.writerow(["{}=".format(key), self.histograms[key]])
+
+        file.close()
