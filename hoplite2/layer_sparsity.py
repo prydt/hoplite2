@@ -4,6 +4,8 @@ import numpy as np
 from collections import OrderedDict
 from tensorflow.keras.models import Model
 
+from . import Spartan
+
 
 class LayerSparsity:
     def __init__(self, name, dimensions, vector_sizes=[2, 4, 8, 16, 32]):
@@ -23,29 +25,56 @@ class LayerSparsity:
             [],  # empty array is default value for all histograms
         )
 
-    def average(self, other):
-        """Returns the average LayerSparsity object formed from self and other"""
+    @staticmethod
+    def average(layer_list):
+        """Returns the average LayerSparsity from multiple LayerSparities"""
 
-        if self.name != other.name or self.dimensions != other.dimensions:
+        if len(layer_list) < 1:
+            print("error: averaging zero layers!")
+            return
+
+        if len(layer_list) == 1:
+            return layer_list[0]
+
+        if (
+            layer_list[0].name != layer_list[1].name
+            or layer_list[0].dimensions != layer_list[1].dimensions
+        ):
             print("error: averaging different layers!")
             return
 
-        out = LayerSparsity(self.name, self.dimensions, self.vector_sizes)
+        out = LayerSparsity(self.name, self.dimensions, layer_list[0].vector_sizes)
 
-        for key in out.histograms:
+        for key in layer_list[0].histograms:
             out.histograms[key] = np.mean(
-                np.array([self.histograms[key], other.histograms[key]]), axis=0
+                np.array([layer.histograms[key] for layer in layer_list]), axis=0
             ).tolist()
 
         return out
 
-    def set_sparsities(self, model, input):
+    def set_sparsities(self, model, input, equals_zero=lambda x: x == 0):
         layer_model = Model(
             inputs=model.inputs, outputs=model.get_layer(self.name).output
         )
 
         output = layer_model.predict(input)[0]
         # TODO finish setting sparsities
+        self.avg_sparsity = Spartan.compute_average_sparsity(output, equals_zero)
+
+        self.histograms["row_hist"] = Spartan.consec_row(output, equals_zero)
+        self.histograms["col_hist"] = Spartan.consec_col(output, equals_zero)
+        self.histograms["chan_hist"] = Spartan.consec_chan(output, equals_zero)
+
+        for size in self.vector_sizes:
+            self.histograms["vec{}_row_hist".format(size)] = Spartan.vec_3d_row(
+                output, size, equals_zero
+            )
+            self.histograms["vec{}_col_hist".format(size)] = Spartan.vec_3d_col(
+                output, size, equals_zero
+            )
+            self.histograms["vec{}_chan_hist".format(size)] = Spartan.vec_3d_chan(
+                output, size, equals_zero
+            )
 
     def output(self, filename=None):
         """Output contents of LayerSparsity object to a given filename, default: stdout"""
