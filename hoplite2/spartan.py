@@ -1,12 +1,12 @@
 import numpy as np
 
-ROW_AXIS = 2
-COL_AXIS = 0
-CHAN_AXIS = 1
-
 
 class Spartan:
     """Sparsity Analysis Helper"""
+
+    ROW_AXIS = 2
+    COL_AXIS = 0
+    CHAN_AXIS = 1
 
     @staticmethod
     def chunk_array(lst, n):
@@ -57,7 +57,9 @@ class Spartan:
             equals_zero = lambda x: x == 0
 
         chan_hist = [0] * (len(output[0][0]) + 1)
-        np.apply_along_axis(Spartan.consec_1d, CHAN, output, chan_hist, equals_zero)
+        np.apply_along_axis(
+            Spartan.consec_1d, Spartan.CHAN_AXIS, output, chan_hist, equals_zero
+        )
         return chan_hist
 
     @staticmethod
@@ -67,17 +69,22 @@ class Spartan:
             equals_zero = lambda x: x == 0
 
         row_hist = [0] * (len(output[0]) + 1)
-        np.apply_along_axis(Spartan.consec_1d, ROW, output, row_hist, equals_zero)
+        np.apply_along_axis(
+            Spartan.consec_1d, Spartan.ROW_AXIS, output, row_hist, equals_zero
+        )
         return row_hist
 
     @staticmethod
     def consec_col(output, equals_zero=lambda x: x == 0):
         """Calculate consecutive zeros histogram in a column"""
+        global COL
         if equals_zero is None:
             equals_zero = lambda x: x == 0
 
         col_hist = [0] * (len(output) + 1)
-        np.apply_along_axis(Spartan.consec_1d, COL, output, col_hist, equals_zero)
+        np.apply_along_axis(
+            Spartan.consec_1d, Spartan.COL_AXIS, output, col_hist, equals_zero
+        )
         return col_hist
 
     @staticmethod
@@ -104,7 +111,9 @@ class Spartan:
             equals_zero = lambda x: x == 0
 
         vec_chan_hist = [0] * (vec_size + 1)
-        np.apply_along_axis(Spartan.vec_1d, CHAN, output, vec_size, vec_chan_hist)
+        np.apply_along_axis(
+            Spartan.vec_1d, Spartan.CHAN_AXIS, output, vec_size, vec_chan_hist
+        )
         return vec_chan_hist
 
     @staticmethod
@@ -114,7 +123,9 @@ class Spartan:
             equals_zero = lambda x: x == 0
 
         vec_row_hist = [0] * (vec_size + 1)
-        np.apply_along_axis(Spartan.vec_1d, ROW, output, vec_size, vec_row_hist)
+        np.apply_along_axis(
+            Spartan.vec_1d, Spartan.ROW_AXIS, output, vec_size, vec_row_hist
+        )
         return vec_row_hist
 
     @staticmethod
@@ -124,5 +135,7 @@ class Spartan:
             equals_zero = lambda x: x == 0
 
         vec_col_hist = [0] * (vec_size + 1)
-        np.apply_along_axis(Spartan.vec_1d, COL, output, vec_size, vec_col_hist)
+        np.apply_along_axis(
+            Spartan.vec_1d, Spartan.COL_AXIS, output, vec_size, vec_col_hist
+        )
         return vec_col_hist

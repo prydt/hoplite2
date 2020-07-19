@@ -10,5 +10,6 @@ home-page = "https://github.com/prydt/hoplite2"
 description-file = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
 requires = [
+    "Pillow >= 7.2.0",
     "tensorflow >= 2.2.0"
 ]

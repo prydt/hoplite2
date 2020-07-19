@@ -33,10 +33,10 @@ def vgg16_preprocess(path):
     return preprocess_input(np.expand_dims(image.img_to_array(img), axis=0))
 
 hop = Hoplite(model, vgg16_preprocess, layers=[
-    "block1_conv2"
-    "block2_conv2"
-    "block3_conv3"
-    "block4_conv3"
+    "block1_conv2",
+    "block2_conv2",
+    "block3_conv3",
+    "block4_conv3",
     "block5_conv3"
 ])
 
