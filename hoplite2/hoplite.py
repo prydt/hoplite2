@@ -1,5 +1,4 @@
 import os
-from collections import OrderedDict
 
 from . import LayerSparsity
 
@@ -25,7 +24,10 @@ class Hoplite:
         self.total_max = total_max
         self.counter = 0  # number of times analysis has run
 
-        self.sparsities = OrderedDict.fromkeys(self.layers, [])
+        # using dictionary comphrension since .fromkeys() function
+        # default value all points to the same object which leads
+        # to nasty errors (which were sorta hard to track down)
+        self.sparsities = {key: [] for key in self.layers}
 
     def equals_zero(self, number):
         """Checks if a given number is considered zero"""
@@ -64,9 +66,8 @@ class Hoplite:
 
         for layer in self.layers:
             layer_s = LayerSparsity(layer, self.model.get_layer(layer).output_shape[1:])
-
             layer_s.set_sparsities(self.model, input, equals_zero=self.equals_zero)
-
+            print("added: {}".format(layer_s))
             self.sparsities[layer].append(layer_s)
 
     def output(self, filename):

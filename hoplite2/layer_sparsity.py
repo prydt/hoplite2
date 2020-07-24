@@ -41,6 +41,9 @@ class LayerSparsity:
             layer_list[0].name != layer_list[1].name
             or layer_list[0].dimensions != layer_list[1].dimensions
         ):
+            print("{} != {}".format(layer_list[0].name, layer_list[1].name))
+            print("or")
+            print("{} != {}".format(layer_list[0].dimensions, layer_list[1].dimensions))
             print("error: averaging different layers!")
             return
 
@@ -59,7 +62,6 @@ class LayerSparsity:
         )
 
         output = layer_model.predict(input)[0]
-        # TODO finish setting sparsities
         self.avg_sparsity = Spartan.compute_average_sparsity(output, equals_zero)
 
         self.histograms["row_hist"] = Spartan.consec_row(output, equals_zero)

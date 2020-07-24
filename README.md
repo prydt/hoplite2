@@ -15,6 +15,7 @@ from hoplite2 import Hoplite
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.vgg16 import preprocess_input
+import numpy as np
 
 # keras model to analyze
 model = VGG16(

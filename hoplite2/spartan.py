@@ -51,7 +51,7 @@ class Spartan:
             hist[0] += 1
 
     @staticmethod
-    def consec_chan(output, equals_zero=lambda x: x == 0):
+    def consec_chan(output, equals_zero=None):
         """Calculate consecutive zeros histogram in a channel"""
         if equals_zero is None:
             equals_zero = lambda x: x == 0
@@ -63,7 +63,7 @@ class Spartan:
         return chan_hist
 
     @staticmethod
-    def consec_row(output, equals_zero=lambda x: x == 0):
+    def consec_row(output, equals_zero=None):
         """Calculate consecutive zeros histogram in a row"""
         if equals_zero is None:
             equals_zero = lambda x: x == 0
@@ -75,7 +75,7 @@ class Spartan:
         return row_hist
 
     @staticmethod
-    def consec_col(output, equals_zero=lambda x: x == 0):
+    def consec_col(output, equals_zero=None):
         """Calculate consecutive zeros histogram in a column"""
         global COL
         if equals_zero is None:
